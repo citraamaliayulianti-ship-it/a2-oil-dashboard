@@ -1,0 +1,692 @@
+schema_version: 2
+dashboard:
+  title: How exposed is the oil market to chokepoint disruptions?
+  subject: oil_market
+  question: Which maritime chokepoints carry the most tanker trade, and how did the Red Sea attacks (from
+    November 2023) and the closure of the Strait of Hormuz (from 28 February 2026) show up in tanker transits,
+    the global supply-demand balance and prices?
+  audience: Energy security analysts in government agencies, international organisations and energy companies
+    who monitor oil supply risk
+  entrypoint: app.py
+  pages:
+  - home.py
+  - sections/1_exposure.py
+  - sections/2_disruptions.py
+  - sections/3_balance.py
+  - sections/4_conclusion.py
+  - sections/5_data.py
+  sample_environment_variable: DASHBOARD_SAMPLE_MODE
+sources:
+- id: eia_spot
+  publisher: U.S. Energy Information Administration (EIA)
+  title: Spot Prices for Crude Oil and Petroleum Products, daily (PET_PRI_SPT_S1_D)
+  url: https://www.eia.gov/dnav/pet/xls/PET_PRI_SPT_S1_D.xls
+  licence: U.S. government work, public domain; EIA asks users to cite "Source - U.S. Energy Information
+    Administration"
+  retrieved: '2026-10-15'
+  cadence: Weekly release (Wednesdays) of daily prices
+  status: snapshot
+  notes: Release of 7 October 2026, daily data to 6 October 2026 (page https://www.eia.gov/dnav/pet/pet_pri_spt_s1_d.htm).
+    Series used - RBRTE (Europe Brent spot FOB), RWTC (Cushing, OK WTI spot FOB), EER_EPMRU_PF4_RGC_DPG
+    (U.S. Gulf Coast conventional gasoline regular), EER_EPD2DXL0_PF4_RGC_DPG (U.S. Gulf Coast ultra-low
+    sulfur No. 2 diesel), EER_EPJK_PF4_RGC_DPG (U.S. Gulf Coast kerosene-type jet fuel). Saved as
+    data/raw/eia/PET_PRI_SPT_S1_D.xls (not submitted; python -m src.data --acquire downloads it).
+- id: eia_stocks
+  publisher: U.S. Energy Information Administration (EIA)
+  title: Weekly U.S. Stocks of Crude Oil and Petroleum Products (PET_STOC_WSTK_DCU_NUS_W)
+  url: https://www.eia.gov/dnav/pet/xls/PET_STOC_WSTK_DCU_NUS_W.xls
+  licence: U.S. government work, public domain; cite EIA
+  retrieved: '2026-10-15'
+  cadence: Weekly (Weekly Petroleum Status Report, usually Wednesdays)
+  status: snapshot
+  notes: Release of 7 October 2026, weeks ending to 2 October 2026. Series used - WCESTUS1 (commercial crude
+    excluding SPR), WCSSTUS1 (SPR crude), WGTSTUS1 (total gasoline), WDISTUS1 (distillate fuel oil), all in
+    thousand barrels and converted to million barrels.
+- id: eia_cushing
+  publisher: U.S. Energy Information Administration (EIA)
+  title: Weekly Cushing, OK Ending Stocks excluding SPR of Crude Oil (W_EPC0_SAX_YCUOK_MBBL)
+  url: https://www.eia.gov/dnav/pet/hist_xls/W_EPC0_SAX_YCUOK_MBBLw.xls
+  licence: U.S. government work, public domain; cite EIA
+  retrieved: '2026-10-15'
+  cadence: Weekly
+  status: snapshot
+  notes: Release of 7 October 2026, weeks ending to 2 October 2026; thousand barrels converted to million barrels.
+- id: eia_steo
+  publisher: U.S. Energy Information Administration (EIA)
+  title: Short-Term Energy Outlook, October 2026, monthly data tables (STEO_m.xlsx)
+  url: https://www.eia.gov/outlooks/steo/xls/STEO_m.xlsx
+  licence: U.S. government work, public domain; cite EIA
+  retrieved: '2026-10-15'
+  cadence: Monthly (next edition 10 November 2026); the file at this URL is replaced by each new edition
+  status: snapshot
+  notes: October 2026 edition (modelling completed 1 October 2026, published 6 October 2026). Rows used from
+    tables 2 (prices), 3a (world production, consumption, inventory net withdrawals, OECD inventories), 3b and
+    3c (production by country). Months to September 2026 are EIA historical estimates; October 2026 to December
+    2027 are forecasts.
+- id: portwatch_daily
+  publisher: International Monetary Fund (IMF PortWatch)
+  title: 'Daily Chokepoints Data: daily transit calls and estimated trade volumes for 28 chokepoints'
+  url: https://services9.arcgis.com/weJ1QsnbMYJlCHdG/arcgis/rest/services/Daily_Chokepoints_Data/FeatureServer/0
+  licence: IMF terms of use (https://www.imf.org/external/terms.htm) - free reuse with attribution "Source - International
+    Monetary Fund" and a statement of any changes; PortWatch asks users to cite "Sources - UN Global Platform; IMF
+    PortWatch (portwatch.imf.org)"
+  retrieved: '2026-10-15'
+  cadence: Updated weekly with daily values
+  status: snapshot
+  notes: 79,548 rows (28 chokepoints, 1 January 2019 to 11 October 2026) downloaded as 80 JSON pages of 1,000
+    rows each through the ArcGIS query endpoint, saved as data/raw/portwatch/daily/ (not submitted). Built from
+    AIS ship-tracking signals on the UN Global Platform. Changes made - daily rows kept for ten chokepoints,
+    monthly and yearly means, 7-day means, shares and comparisons with baselines.
+- id: portwatch_list
+  publisher: International Monetary Fund (IMF PortWatch)
+  title: PortWatch Chokepoints Database (chokepoint names and coordinates)
+  url: https://services9.arcgis.com/weJ1QsnbMYJlCHdG/arcgis/rest/services/PortWatch_chokepoints_database/FeatureServer/0
+  licence: IMF terms of use (https://www.imf.org/external/terms.htm), as above
+  retrieved: '2026-10-15'
+  cadence: Occasional
+  status: snapshot
+  notes: Latitude and longitude of each chokepoint, joined to the monthly table for the map.
+- id: eia_steo_reports
+  publisher: U.S. Energy Information Administration (EIA)
+  title: Short-Term Energy Outlook reports, April, August and October 2026 editions
+  url: https://www.eia.gov/outlooks/steo/archives/
+  licence: U.S. government work, public domain; cite EIA
+  retrieved: '2026-10-15'
+  cadence: Monthly
+  status: archive
+  notes: Contextual source for event dates and statements quoted in the text - start of military action and
+    closure of the Strait of Hormuz on 28 February 2026 (April 2026 edition); June 2026 memorandum of
+    understanding, strikes on vessels resuming on 7 July 2026, Hormuz flows of 4.9 million b/d in 2Q26 against
+    21.6 in 4Q25 (August 2026 edition); forecast assumptions (October 2026 edition, steo_full.pdf).
+- id: eia_red_sea
+  publisher: U.S. Energy Information Administration (EIA)
+  title: 'Today in Energy: Fewer tankers transit the Red Sea in 2024 (11 October 2024)'
+  url: https://www.eia.gov/todayinenergy/detail.php?id=63446
+  licence: U.S. government work, public domain; cite EIA
+  retrieved: '2026-10-15'
+  cadence: One-off article
+  status: archive
+  notes: Contextual source - attacks on commercial ships in the Red Sea began in November 2023; Bab el-Mandeb
+    oil flows 8.7 million b/d in 2023 and 4.0 in January-August 2024; Cape of Good Hope 6.0 and 9.2 (Vortexa
+    data).
+- id: eia_hormuz
+  publisher: U.S. Energy Information Administration (EIA)
+  title: 'Today in Energy: Amid regional conflict, the Strait of Hormuz remains critical oil chokepoint (16 June
+    2025)'
+  url: https://www.eia.gov/todayinenergy/detail.php?id=65504
+  licence: U.S. government work, public domain; cite EIA
+  retrieved: '2026-10-15'
+  cadence: One-off article
+  status: archive
+  notes: Contextual source - oil flows through the strait averaged 20 million b/d in 2024 (about one-fifth of
+    world petroleum liquids consumption); about 2.6 million b/d of Saudi and UAE pipeline capacity could bypass it.
+- id: natural_earth
+  publisher: Natural Earth
+  title: Admin 0 – Countries, 1:110m (via world-atlas 2.0.2)
+  url: https://www.naturalearthdata.com/downloads/110m-cultural-vectors/
+  licence: Public domain (Natural Earth); world-atlas packaging under the ISC licence
+  retrieved: '2026-10-13'
+  cadence: Occasional releases
+  status: snapshot
+  notes: Contextual source for the outline map on page 1 only. Saved as data/geo/countries-110m-iso3.json.
+datasets:
+- id: chokepoint_day
+  source_ids:
+  - portwatch_daily
+  sample: data/sample.csv
+  processed_output: data/processed.csv
+  format: csv
+  date_column: date
+  primary_key:
+  - date
+  - portid
+  minimum_rows: 10000
+  latest_observation: '2026-10-11'
+  columns:
+    date:
+      type: date
+      role: time
+      nullable: false
+      date_minimum: '2019-01-01'
+      date_maximum: '2026-10-11'
+    year:
+      type: integer
+      role: time
+      nullable: false
+      minimum: 2019
+      maximum: 2026
+    portid:
+      type: string
+      role: identifier
+      nullable: false
+      allowed_values: [chokepoint5, chokepoint6, chokepoint14, chokepoint9, chokepoint8, chokepoint4, chokepoint1,
+        chokepoint11, chokepoint7, chokepoint12]
+    chokepoint:
+      type: string
+      role: geography
+      nullable: false
+      allowed_values: [Malacca Strait, Strait of Hormuz, Luzon Strait, Dover Strait, Gibraltar Strait, Bab el-Mandeb
+          Strait, Suez Canal, Taiwan Strait, Cape of Good Hope, Korea Strait]
+    n_tanker:
+      type: integer
+      role: measure
+      nullable: false
+      unit: tanker transit calls per day
+      minimum: 0
+      maximum: 1000
+    tanker_volume_t:
+      type: integer
+      role: measure
+      nullable: false
+      unit: metric tons per day (estimated cargo carried by tankers)
+      minimum: 0
+      maximum: 20000000
+    n_total:
+      type: integer
+      role: measure
+      nullable: false
+      unit: vessel transit calls per day (all vessel types)
+      minimum: 0
+      maximum: 2000
+    total_volume_t:
+      type: integer
+      role: measure
+      nullable: false
+      unit: metric tons per day (estimated cargo carried by all vessel types)
+      minimum: 0
+      maximum: 60000000
+- id: chokepoint_month
+  source_ids:
+  - portwatch_daily
+  - portwatch_list
+  sample: data/sample_chokepoint_month.csv
+  processed_output: data/processed_chokepoint_month.csv
+  format: csv
+  date_column: date
+  primary_key:
+  - date
+  - portid
+  minimum_rows: 2000
+  latest_observation: '2026-10-11'
+  columns:
+    date:
+      type: date
+      role: time
+      nullable: false
+      date_minimum: '2019-01-31'
+      date_maximum: '2026-10-11'
+    year:
+      type: integer
+      role: time
+      nullable: false
+      minimum: 2019
+      maximum: 2026
+    month:
+      type: integer
+      role: time
+      nullable: false
+      minimum: 1
+      maximum: 12
+    portid:
+      type: string
+      role: identifier
+      nullable: false
+    chokepoint:
+      type: string
+      role: geography
+      nullable: false
+    lat:
+      type: number
+      role: geography
+      nullable: false
+      unit: degrees latitude
+      minimum: -90
+      maximum: 90
+    lon:
+      type: number
+      role: geography
+      nullable: false
+      unit: degrees longitude
+      minimum: -180
+      maximum: 180
+    days:
+      type: integer
+      role: measure
+      nullable: false
+      unit: days with data in the month
+      minimum: 1
+      maximum: 31
+    tanker_transits:
+      type: number
+      role: measure
+      nullable: false
+      unit: tanker transit calls per day (monthly mean)
+      minimum: 0
+      maximum: 500
+    tanker_volume_t:
+      type: number
+      role: measure
+      nullable: false
+      unit: metric tons per day (monthly mean of estimated tanker cargo)
+      minimum: 0
+      maximum: 20000000
+    total_transits:
+      type: number
+      role: measure
+      nullable: false
+      unit: vessel transit calls per day, all vessel types (monthly mean)
+      minimum: 0
+      maximum: 2000
+    total_volume_t:
+      type: number
+      role: measure
+      nullable: false
+      unit: metric tons per day (monthly mean of estimated cargo, all vessel types)
+      minimum: 0
+      maximum: 60000000
+- id: market_day
+  source_ids:
+  - eia_spot
+  - eia_stocks
+  - eia_cushing
+  - portwatch_daily
+  sample: data/sample_market_day.csv
+  processed_output: data/processed_market_day.csv
+  format: csv
+  date_column: date
+  primary_key:
+  - date
+  - indicator_id
+  minimum_rows: 20000
+  latest_observation: '2026-10-11'
+  columns:
+    date:
+      type: date
+      role: time
+      nullable: false
+      date_minimum: '2019-01-01'
+      date_maximum: '2026-10-11'
+    indicator_id:
+      type: string
+      role: identifier
+      nullable: false
+      allowed_values: [brent, wti, gasoline_usgc, diesel_usgc, jet_usgc, brent_wti, crack_321, us_crude, us_spr, cushing,
+        us_gasoline, us_distillate, hormuz, bab_el_mandeb, suez, cape, malacca]
+    group:
+      type: string
+      role: dimension
+      nullable: false
+      allowed_values: [Crude prices, Product prices, Spreads, U.S. inventories, Chokepoint transits]
+    unit:
+      type: string
+      role: dimension
+      nullable: false
+      allowed_values: [US dollars per barrel, US dollars per gallon, million barrels, tanker transit calls per day]
+    value:
+      type: number
+      role: measure
+      nullable: false
+      unit: as stated in the unit column of each row
+      minimum: -50
+      maximum: 750
+- id: steo_history
+  source_ids:
+  - eia_steo
+  sample: data/sample_steo_history.csv
+  processed_output: data/processed_steo_history.csv
+  format: csv
+  date_column: date
+  primary_key:
+  - date
+  - series_id
+  minimum_rows: 500
+  latest_observation: '2026-09-30'
+  columns:
+    date:
+      type: date
+      role: time
+      nullable: false
+      date_minimum: '2022-01-31'
+      date_maximum: '2026-09-30'
+    year:
+      type: integer
+      role: time
+      nullable: false
+      minimum: 2022
+      maximum: 2026
+    month:
+      type: integer
+      role: time
+      nullable: false
+      minimum: 1
+      maximum: 12
+    series_id:
+      type: string
+      role: identifier
+      nullable: false
+      allowed_values: [papr_world, patc_world, t3_stchange_world, pasc_oecd_t3, BREPUUS, WTIPUUS, papr_sa, papr_iz,
+        papr_tc, papr_ku, papr_IR, papr_QA, papr_ba]
+    series:
+      type: string
+      role: dimension
+      nullable: false
+    group:
+      type: string
+      role: dimension
+      nullable: false
+      allowed_values: [World balance, Prices, Gulf producers]
+    unit:
+      type: string
+      role: dimension
+      nullable: false
+      allowed_values: [million barrels per day, million barrels, US dollars per barrel]
+    value:
+      type: number
+      role: measure
+      nullable: false
+      unit: as stated in the unit column of each row
+      minimum: -15
+      maximum: 3500
+    status:
+      type: string
+      role: dimension
+      nullable: false
+      allowed_values: [Historical]
+    edition:
+      type: string
+      role: dimension
+      nullable: false
+      allowed_values: [October 2026]
+- id: steo_forecast
+  source_ids:
+  - eia_steo
+  sample: data/sample_steo_forecast.csv
+  processed_output: data/processed_steo_forecast.csv
+  format: csv
+  date_column: date
+  primary_key:
+  - date
+  - series_id
+  minimum_rows: 100
+  latest_observation: '2027-12-31'
+  columns:
+    date:
+      type: date
+      role: time
+      nullable: false
+      date_minimum: '2026-10-31'
+      date_maximum: '2027-12-31'
+    year:
+      type: integer
+      role: time
+      nullable: false
+      minimum: 2026
+      maximum: 2027
+    month:
+      type: integer
+      role: time
+      nullable: false
+      minimum: 1
+      maximum: 12
+    series_id:
+      type: string
+      role: identifier
+      nullable: false
+      allowed_values: [papr_world, patc_world, t3_stchange_world, pasc_oecd_t3, BREPUUS, WTIPUUS, papr_tc, papr_QA,
+        papr_ba]
+    series:
+      type: string
+      role: dimension
+      nullable: false
+    group:
+      type: string
+      role: dimension
+      nullable: false
+      allowed_values: [World balance, Prices, Gulf producers]
+    unit:
+      type: string
+      role: dimension
+      nullable: false
+      allowed_values: [million barrels per day, million barrels, US dollars per barrel]
+    value:
+      type: number
+      role: measure
+      nullable: false
+      unit: as stated in the unit column of each row
+      minimum: -15
+      maximum: 3500
+    status:
+      type: string
+      role: dimension
+      nullable: false
+      allowed_values: [Forecast]
+    edition:
+      type: string
+      role: dimension
+      nullable: false
+      allowed_values: [October 2026]
+views:
+- id: market_monitor
+  dataset_id: market_day
+  page: home.py
+  title: 'Oil market monitor: prices, spreads, U.S. stocks and chokepoint transits'
+  unit: as listed in each row
+  source_ids:
+  - eia_spot
+  - eia_stocks
+  - eia_cushing
+  - portwatch_daily
+  - eia_steo_reports
+  - eia_red_sea
+  controls:
+  - key: monitor_groups
+    type: multiselect
+    label: Indicator groups
+    default_value:
+    - Crude prices
+    - Product prices
+    - Spreads
+    - U.S. inventories
+    - Chokepoint transits
+    test_value:
+    - Crude prices
+    - Spreads
+    empty_test_value: []
+    empty_expected_text: No indicators match the selected groups.
+    filter:
+      column: group
+      operator: isin
+  - key: monitor_asof
+    type: selectbox
+    label: Monitor date
+    default_value: Latest
+    test_value: 27 Feb 2026 (day before the Hormuz closure)
+  - key: monitor_window
+    type: selectbox
+    label: Change over
+    default_value: 1 month
+    test_value: 1 year
+  - key: monitor_chart
+    type: selectbox
+    label: Chart indicator
+    default_value: brent
+    test_value: hormuz
+  outputs:
+  - metric
+  - table
+  - chart
+  - download
+- id: chokepoint_exposure
+  dataset_id: chokepoint_month
+  page: sections/1_exposure.py
+  title: Which chokepoints carry the most tanker trade?
+  unit: million metric tons per day
+  source_ids:
+  - portwatch_daily
+  - portwatch_list
+  - eia_hormuz
+  - eia_red_sea
+  - natural_earth
+  controls:
+  - key: exposure_year
+    type: selectbox
+    label: Year
+    default_value: 2025
+    test_value: 2026
+    filter:
+      column: year
+      operator: equals
+  - key: exposure_measure
+    type: radio
+    label: Measure
+    default_value: Tanker trade volume
+    test_value: Tanker transit calls
+  outputs:
+  - metric
+  - chart
+  - table
+  - download
+- id: chokepoint_disruption
+  dataset_id: chokepoint_day
+  page: sections/2_disruptions.py
+  title: How did the Red Sea attacks and the Hormuz closure show up in tanker transits?
+  unit: tanker transit calls per day
+  source_ids:
+  - portwatch_daily
+  - eia_steo_reports
+  - eia_red_sea
+  controls:
+  - key: disruption_chokepoints
+    type: multiselect
+    label: Chokepoints
+    default_value:
+    - Strait of Hormuz
+    - Bab el-Mandeb Strait
+    - Suez Canal
+    - Cape of Good Hope
+    test_value:
+    - Strait of Hormuz
+    - Malacca Strait
+    empty_test_value: []
+    empty_expected_text: No chokepoints match the selected filters.
+    filter:
+      column: chokepoint
+      operator: isin
+  - key: disruption_period
+    type: slider
+    label: Period
+    default_value:
+    - '2023-01-01'
+    - '2026-10-11'
+    test_value:
+    - '2025-06-01'
+    - '2026-10-11'
+    filter:
+      column: date
+      operator: range
+  - key: disruption_measure
+    type: radio
+    label: Measure
+    default_value: Tanker transit calls
+    test_value: Tanker trade volume (metric tons)
+  - key: disruption_baseline
+    type: selectbox
+    label: Baseline period
+    default_value: Jan–Oct 2023 (before the Red Sea attacks)
+    test_value: 12 months before the Hormuz closure
+  outputs:
+  - metric
+  - chart
+  - table
+  - download
+- id: balance_prices
+  dataset_id: steo_history
+  page: sections/3_balance.py
+  title: How did the global supply-demand balance, inventories and prices respond?
+  unit: million barrels per day
+  source_ids:
+  - eia_steo
+  - eia_steo_reports
+  controls:
+  - key: balance_period
+    type: slider
+    label: Period
+    default_value:
+    - 2022
+    - 2026
+    test_value:
+    - 2025
+    - 2026
+    filter:
+      column: year
+      operator: range
+  - key: balance_groups
+    type: multiselect
+    label: Series groups
+    default_value:
+    - World balance
+    - Prices
+    - Gulf producers
+    test_value:
+    - World balance
+    empty_test_value: []
+    empty_expected_text: No series match the selected groups.
+    filter:
+      column: group
+      operator: isin
+  - key: balance_forecast
+    type: checkbox
+    label: Show EIA forecast
+    default_value: true
+    test_value: false
+  outputs:
+  - metric
+  - chart
+  - table
+  - download
+pipeline:
+  acquisition_method: script
+  acquisition_path: src/data.py
+  transform_command:
+  - python
+  - -m
+  - src.data
+  download_declared: true
+  download_label: Download filtered data (CSV)
+  date_label: Latest observation
+topic_integrity:
+  physical_units: Prices in US dollars per barrel (crude oil, spreads) or US dollars per gallon (refined products;
+    1 barrel = 42 U.S. gallons). Stocks in million barrels (EIA publishes thousand barrels; divided by 1,000).
+    Supply, consumption and stock changes in million barrels per day. PortWatch traffic in transit calls per day
+    and in metric tons per day of estimated cargo; tanker tonnage covers every tanker type (crude, products,
+    chemicals and gas) and is never converted to barrels.
+  frequency: Daily spot prices (trading days, so weekends and holidays are absent) and daily PortWatch transits
+    (calendar days, UTC); weekly U.S. stocks (weeks ending Friday); monthly STEO estimates and forecasts. Tanker
+    transits are shown as trailing 7-day means; the monitor compares values at their own frequency and shows each
+    indicator's own latest date.
+  observation_status: EIA spot prices and weekly stocks are reported observations (recent weekly values can be
+    revised). PortWatch counts and volumes are model estimates from AIS ship-tracking signals - ships with
+    transponders switched off are missed and cargo is estimated from draught. STEO months up to September 2026
+    are EIA historical estimates subject to revision; later months are forecasts and are kept in a separate
+    dataset (steo_forecast) and drawn dashed or pale.
+  publication_vintage: EIA spot price, weekly stocks and Cushing workbooks released 7 October 2026; Short-Term
+    Energy Outlook October 2026 edition (modelling completed 1 October, published 6 October 2026); PortWatch
+    Daily Chokepoints Data retrieved 15 October 2026 with data to 11 October 2026.
+  grade_or_contract: Brent = Europe Brent spot price FOB (EIA series RBRTE); WTI = Cushing, OK WTI spot price FOB
+    (RWTC); gasoline = U.S. Gulf Coast conventional gasoline regular spot FOB; diesel = U.S. Gulf Coast ultra-low
+    sulfur No. 2 diesel spot; jet fuel = U.S. Gulf Coast kerosene-type jet fuel spot FOB. Spot prices, not futures
+    (EIA stopped publishing NYMEX futures prices after 5 April 2024). STEO prices are monthly averages of the same
+    Brent and WTI spot series.
+  location: Brent is a North Sea (Europe) price, WTI is priced at Cushing, Oklahoma, and the product prices are for
+    the U.S. Gulf Coast. U.S. stocks are national totals except Cushing. Chokepoints are the 28 PortWatch transit
+    boundaries; coordinates from the PortWatch chokepoints database. The seven Gulf producers are those whose sea
+    exports must pass the Strait of Hormuz unless piped elsewhere (Saudi Arabia, Iraq, United Arab Emirates,
+    Kuwait, Iran, Qatar, Bahrain).
+  forecast_source: EIA Short-Term Energy Outlook, October 2026 edition (Short-Term Integrated Forecasting System).
+    EIA assumes oil flows from the Middle East remain constrained through 4Q26. No other forecasts are used, and
+    the dashboard makes no forecasts of its own.
+  forecast_horizon: October 2026 to December 2027, monthly. EIA publishes no country forecast for Saudi Arabia,
+    Iraq, Kuwait or Iran, so their forecast rows are absent rather than filled.
+  event_dates: Event lines on charts use dates reported by EIA - November 2023 (Red Sea attacks begin), 28
+    February 2026 (military action begins; Hormuz effectively closed) and 7 July 2026 (strikes on vessels
+    resume). They are context only; the dashboard does not estimate the effect of any event.

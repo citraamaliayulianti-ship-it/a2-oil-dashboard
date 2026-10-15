@@ -1,0 +1,136 @@
+date,year,month,series_id,series,group,unit,value,status,edition
+2026-10-31,2026,10,papr_world,World production of petroleum and other liquids,World balance,million barrels per day,102.1047,Forecast,October 2026
+2026-11-30,2026,11,papr_world,World production of petroleum and other liquids,World balance,million barrels per day,103.0917,Forecast,October 2026
+2026-12-31,2026,12,papr_world,World production of petroleum and other liquids,World balance,million barrels per day,103.709,Forecast,October 2026
+2027-01-31,2027,1,papr_world,World production of petroleum and other liquids,World balance,million barrels per day,104.7621,Forecast,October 2026
+2027-02-28,2027,2,papr_world,World production of petroleum and other liquids,World balance,million barrels per day,106.3173,Forecast,October 2026
+2027-03-31,2027,3,papr_world,World production of petroleum and other liquids,World balance,million barrels per day,107.267,Forecast,October 2026
+2027-04-30,2027,4,papr_world,World production of petroleum and other liquids,World balance,million barrels per day,108.5688,Forecast,October 2026
+2027-05-31,2027,5,papr_world,World production of petroleum and other liquids,World balance,million barrels per day,109.8362,Forecast,October 2026
+2027-06-30,2027,6,papr_world,World production of petroleum and other liquids,World balance,million barrels per day,110.2294,Forecast,October 2026
+2027-07-31,2027,7,papr_world,World production of petroleum and other liquids,World balance,million barrels per day,110.7498,Forecast,October 2026
+2027-08-31,2027,8,papr_world,World production of petroleum and other liquids,World balance,million barrels per day,110.904,Forecast,October 2026
+2027-09-30,2027,9,papr_world,World production of petroleum and other liquids,World balance,million barrels per day,111.103,Forecast,October 2026
+2027-10-31,2027,10,papr_world,World production of petroleum and other liquids,World balance,million barrels per day,111.3578,Forecast,October 2026
+2027-11-30,2027,11,papr_world,World production of petroleum and other liquids,World balance,million barrels per day,111.8191,Forecast,October 2026
+2027-12-31,2027,12,papr_world,World production of petroleum and other liquids,World balance,million barrels per day,111.4912,Forecast,October 2026
+2026-10-31,2026,10,patc_world,World consumption of petroleum and other liquids,World balance,million barrels per day,102.7756,Forecast,October 2026
+2026-11-30,2026,11,patc_world,World consumption of petroleum and other liquids,World balance,million barrels per day,103.5629,Forecast,October 2026
+2026-12-31,2026,12,patc_world,World consumption of petroleum and other liquids,World balance,million barrels per day,104.6347,Forecast,October 2026
+2027-01-31,2027,1,patc_world,World consumption of petroleum and other liquids,World balance,million barrels per day,101.9818,Forecast,October 2026
+2027-02-28,2027,2,patc_world,World consumption of petroleum and other liquids,World balance,million barrels per day,104.305,Forecast,October 2026
+2027-03-31,2027,3,patc_world,World consumption of petroleum and other liquids,World balance,million barrels per day,103.0793,Forecast,October 2026
+2027-04-30,2027,4,patc_world,World consumption of petroleum and other liquids,World balance,million barrels per day,103.9814,Forecast,October 2026
+2027-05-31,2027,5,patc_world,World consumption of petroleum and other liquids,World balance,million barrels per day,104.1172,Forecast,October 2026
+2027-06-30,2027,6,patc_world,World consumption of petroleum and other liquids,World balance,million barrels per day,105.7097,Forecast,October 2026
+2027-07-31,2027,7,patc_world,World consumption of petroleum and other liquids,World balance,million barrels per day,105.6,Forecast,October 2026
+2027-08-31,2027,8,patc_world,World consumption of petroleum and other liquids,World balance,million barrels per day,105.4342,Forecast,October 2026
+2027-09-30,2027,9,patc_world,World consumption of petroleum and other liquids,World balance,million barrels per day,105.5725,Forecast,October 2026
+2027-10-31,2027,10,patc_world,World consumption of petroleum and other liquids,World balance,million barrels per day,104.4146,Forecast,October 2026
+2027-11-30,2027,11,patc_world,World consumption of petroleum and other liquids,World balance,million barrels per day,105.2305,Forecast,October 2026
+2027-12-31,2027,12,patc_world,World consumption of petroleum and other liquids,World balance,million barrels per day,106.3301,Forecast,October 2026
+2026-10-31,2026,10,t3_stchange_world,World inventory net withdrawals (positive = stocks fall),World balance,million barrels per day,0.6709,Forecast,October 2026
+2026-11-30,2026,11,t3_stchange_world,World inventory net withdrawals (positive = stocks fall),World balance,million barrels per day,0.4712,Forecast,October 2026
+2026-12-31,2026,12,t3_stchange_world,World inventory net withdrawals (positive = stocks fall),World balance,million barrels per day,0.9257,Forecast,October 2026
+2027-01-31,2027,1,t3_stchange_world,World inventory net withdrawals (positive = stocks fall),World balance,million barrels per day,-2.7803,Forecast,October 2026
+2027-02-28,2027,2,t3_stchange_world,World inventory net withdrawals (positive = stocks fall),World balance,million barrels per day,-2.0123,Forecast,October 2026
+2027-03-31,2027,3,t3_stchange_world,World inventory net withdrawals (positive = stocks fall),World balance,million barrels per day,-4.1877,Forecast,October 2026
+2027-04-30,2027,4,t3_stchange_world,World inventory net withdrawals (positive = stocks fall),World balance,million barrels per day,-4.5874,Forecast,October 2026
+2027-05-31,2027,5,t3_stchange_world,World inventory net withdrawals (positive = stocks fall),World balance,million barrels per day,-5.719,Forecast,October 2026
+2027-06-30,2027,6,t3_stchange_world,World inventory net withdrawals (positive = stocks fall),World balance,million barrels per day,-4.5197,Forecast,October 2026
+2027-07-31,2027,7,t3_stchange_world,World inventory net withdrawals (positive = stocks fall),World balance,million barrels per day,-5.1498,Forecast,October 2026
+2027-08-31,2027,8,t3_stchange_world,World inventory net withdrawals (positive = stocks fall),World balance,million barrels per day,-5.4698,Forecast,October 2026
+2027-09-30,2027,9,t3_stchange_world,World inventory net withdrawals (positive = stocks fall),World balance,million barrels per day,-5.5305,Forecast,October 2026
+2027-10-31,2027,10,t3_stchange_world,World inventory net withdrawals (positive = stocks fall),World balance,million barrels per day,-6.9433,Forecast,October 2026
+2027-11-30,2027,11,t3_stchange_world,World inventory net withdrawals (positive = stocks fall),World balance,million barrels per day,-6.5887,Forecast,October 2026
+2027-12-31,2027,12,t3_stchange_world,World inventory net withdrawals (positive = stocks fall),World balance,million barrels per day,-5.1611,Forecast,October 2026
+2026-10-31,2026,10,pasc_oecd_t3,"OECD commercial inventories, end of month",World balance,million barrels,2664.1207,Forecast,October 2026
+2026-11-30,2026,11,pasc_oecd_t3,"OECD commercial inventories, end of month",World balance,million barrels,2663.406,Forecast,October 2026
+2026-12-31,2026,12,pasc_oecd_t3,"OECD commercial inventories, end of month",World balance,million barrels,2644.5119,Forecast,October 2026
+2027-01-31,2027,1,pasc_oecd_t3,"OECD commercial inventories, end of month",World balance,million barrels,2675.6285,Forecast,October 2026
+2027-02-28,2027,2,pasc_oecd_t3,"OECD commercial inventories, end of month",World balance,million barrels,2673.6139,Forecast,October 2026
+2027-03-31,2027,3,pasc_oecd_t3,"OECD commercial inventories, end of month",World balance,million barrels,2710.0968,Forecast,October 2026
+2027-04-30,2027,4,pasc_oecd_t3,"OECD commercial inventories, end of month",World balance,million barrels,2755.0802,Forecast,October 2026
+2027-05-31,2027,5,pasc_oecd_t3,"OECD commercial inventories, end of month",World balance,million barrels,2813.3397,Forecast,October 2026
+2027-06-30,2027,6,pasc_oecd_t3,"OECD commercial inventories, end of month",World balance,million barrels,2848.9578,Forecast,October 2026
+2027-07-31,2027,7,pasc_oecd_t3,"OECD commercial inventories, end of month",World balance,million barrels,2891.0379,Forecast,October 2026
+2027-08-31,2027,8,pasc_oecd_t3,"OECD commercial inventories, end of month",World balance,million barrels,2932.8968,Forecast,October 2026
+2027-09-30,2027,9,pasc_oecd_t3,"OECD commercial inventories, end of month",World balance,million barrels,2972.2615,Forecast,October 2026
+2027-10-31,2027,10,pasc_oecd_t3,"OECD commercial inventories, end of month",World balance,million barrels,3021.2749,Forecast,October 2026
+2027-11-30,2027,11,pasc_oecd_t3,"OECD commercial inventories, end of month",World balance,million barrels,3073.273,Forecast,October 2026
+2027-12-31,2027,12,pasc_oecd_t3,"OECD commercial inventories, end of month",World balance,million barrels,3101.9984,Forecast,October 2026
+2026-10-31,2026,10,BREPUUS,"Brent spot price, monthly average",Prices,US dollars per barrel,111.0,Forecast,October 2026
+2026-11-30,2026,11,BREPUUS,"Brent spot price, monthly average",Prices,US dollars per barrel,104.0,Forecast,October 2026
+2026-12-31,2026,12,BREPUUS,"Brent spot price, monthly average",Prices,US dollars per barrel,99.0,Forecast,October 2026
+2027-01-31,2027,1,BREPUUS,"Brent spot price, monthly average",Prices,US dollars per barrel,97.0,Forecast,October 2026
+2027-02-28,2027,2,BREPUUS,"Brent spot price, monthly average",Prices,US dollars per barrel,95.0,Forecast,October 2026
+2027-03-31,2027,3,BREPUUS,"Brent spot price, monthly average",Prices,US dollars per barrel,93.0,Forecast,October 2026
+2027-04-30,2027,4,BREPUUS,"Brent spot price, monthly average",Prices,US dollars per barrel,90.0,Forecast,October 2026
+2027-05-31,2027,5,BREPUUS,"Brent spot price, monthly average",Prices,US dollars per barrel,87.0,Forecast,October 2026
+2027-06-30,2027,6,BREPUUS,"Brent spot price, monthly average",Prices,US dollars per barrel,84.0,Forecast,October 2026
+2027-07-31,2027,7,BREPUUS,"Brent spot price, monthly average",Prices,US dollars per barrel,82.0,Forecast,October 2026
+2027-08-31,2027,8,BREPUUS,"Brent spot price, monthly average",Prices,US dollars per barrel,80.0,Forecast,October 2026
+2027-09-30,2027,9,BREPUUS,"Brent spot price, monthly average",Prices,US dollars per barrel,78.0,Forecast,October 2026
+2027-10-31,2027,10,BREPUUS,"Brent spot price, monthly average",Prices,US dollars per barrel,76.0,Forecast,October 2026
+2027-11-30,2027,11,BREPUUS,"Brent spot price, monthly average",Prices,US dollars per barrel,74.0,Forecast,October 2026
+2027-12-31,2027,12,BREPUUS,"Brent spot price, monthly average",Prices,US dollars per barrel,72.0,Forecast,October 2026
+2026-10-31,2026,10,WTIPUUS,"WTI spot price, monthly average",Prices,US dollars per barrel,100.0,Forecast,October 2026
+2026-11-30,2026,11,WTIPUUS,"WTI spot price, monthly average",Prices,US dollars per barrel,97.0,Forecast,October 2026
+2026-12-31,2026,12,WTIPUUS,"WTI spot price, monthly average",Prices,US dollars per barrel,94.0,Forecast,October 2026
+2027-01-31,2027,1,WTIPUUS,"WTI spot price, monthly average",Prices,US dollars per barrel,93.0,Forecast,October 2026
+2027-02-28,2027,2,WTIPUUS,"WTI spot price, monthly average",Prices,US dollars per barrel,91.0,Forecast,October 2026
+2027-03-31,2027,3,WTIPUUS,"WTI spot price, monthly average",Prices,US dollars per barrel,89.0,Forecast,October 2026
+2027-04-30,2027,4,WTIPUUS,"WTI spot price, monthly average",Prices,US dollars per barrel,86.0,Forecast,October 2026
+2027-05-31,2027,5,WTIPUUS,"WTI spot price, monthly average",Prices,US dollars per barrel,83.0,Forecast,October 2026
+2027-06-30,2027,6,WTIPUUS,"WTI spot price, monthly average",Prices,US dollars per barrel,80.0,Forecast,October 2026
+2027-07-31,2027,7,WTIPUUS,"WTI spot price, monthly average",Prices,US dollars per barrel,78.0,Forecast,October 2026
+2027-08-31,2027,8,WTIPUUS,"WTI spot price, monthly average",Prices,US dollars per barrel,76.0,Forecast,October 2026
+2027-09-30,2027,9,WTIPUUS,"WTI spot price, monthly average",Prices,US dollars per barrel,74.0,Forecast,October 2026
+2027-10-31,2027,10,WTIPUUS,"WTI spot price, monthly average",Prices,US dollars per barrel,72.0,Forecast,October 2026
+2027-11-30,2027,11,WTIPUUS,"WTI spot price, monthly average",Prices,US dollars per barrel,70.0,Forecast,October 2026
+2027-12-31,2027,12,WTIPUUS,"WTI spot price, monthly average",Prices,US dollars per barrel,68.0,Forecast,October 2026
+2026-10-31,2026,10,papr_tc,United Arab Emirates,Gulf producers,million barrels per day,4.5767,Forecast,October 2026
+2026-11-30,2026,11,papr_tc,United Arab Emirates,Gulf producers,million barrels per day,4.7469,Forecast,October 2026
+2026-12-31,2026,12,papr_tc,United Arab Emirates,Gulf producers,million barrels per day,4.827,Forecast,October 2026
+2027-01-31,2027,1,papr_tc,United Arab Emirates,Gulf producers,million barrels per day,4.9266,Forecast,October 2026
+2027-02-28,2027,2,papr_tc,United Arab Emirates,Gulf producers,million barrels per day,4.937,Forecast,October 2026
+2027-03-31,2027,3,papr_tc,United Arab Emirates,Gulf producers,million barrels per day,5.0468,Forecast,October 2026
+2027-04-30,2027,4,papr_tc,United Arab Emirates,Gulf producers,million barrels per day,5.1569,Forecast,October 2026
+2027-05-31,2027,5,papr_tc,United Arab Emirates,Gulf producers,million barrels per day,5.2869,Forecast,October 2026
+2027-06-30,2027,6,papr_tc,United Arab Emirates,Gulf producers,million barrels per day,5.2872,Forecast,October 2026
+2027-07-31,2027,7,papr_tc,United Arab Emirates,Gulf producers,million barrels per day,5.2872,Forecast,October 2026
+2027-08-31,2027,8,papr_tc,United Arab Emirates,Gulf producers,million barrels per day,5.2872,Forecast,October 2026
+2027-09-30,2027,9,papr_tc,United Arab Emirates,Gulf producers,million barrels per day,5.2872,Forecast,October 2026
+2027-10-31,2027,10,papr_tc,United Arab Emirates,Gulf producers,million barrels per day,5.287,Forecast,October 2026
+2027-11-30,2027,11,papr_tc,United Arab Emirates,Gulf producers,million barrels per day,5.2871,Forecast,October 2026
+2027-12-31,2027,12,papr_tc,United Arab Emirates,Gulf producers,million barrels per day,5.2873,Forecast,October 2026
+2026-10-31,2026,10,papr_QA,Qatar,Gulf producers,million barrels per day,0.8473,Forecast,October 2026
+2026-11-30,2026,11,papr_QA,Qatar,Gulf producers,million barrels per day,0.9373,Forecast,October 2026
+2026-12-31,2026,12,papr_QA,Qatar,Gulf producers,million barrels per day,0.9774,Forecast,October 2026
+2027-01-31,2027,1,papr_QA,Qatar,Gulf producers,million barrels per day,1.1072,Forecast,October 2026
+2027-02-28,2027,2,papr_QA,Qatar,Gulf producers,million barrels per day,1.1874,Forecast,October 2026
+2027-03-31,2027,3,papr_QA,Qatar,Gulf producers,million barrels per day,1.2873,Forecast,October 2026
+2027-04-30,2027,4,papr_QA,Qatar,Gulf producers,million barrels per day,1.3673,Forecast,October 2026
+2027-05-31,2027,5,papr_QA,Qatar,Gulf producers,million barrels per day,1.4374,Forecast,October 2026
+2027-06-30,2027,6,papr_QA,Qatar,Gulf producers,million barrels per day,1.4875,Forecast,October 2026
+2027-07-31,2027,7,papr_QA,Qatar,Gulf producers,million barrels per day,1.5475,Forecast,October 2026
+2027-08-31,2027,8,papr_QA,Qatar,Gulf producers,million barrels per day,1.5474,Forecast,October 2026
+2027-09-30,2027,9,papr_QA,Qatar,Gulf producers,million barrels per day,1.5475,Forecast,October 2026
+2027-10-31,2027,10,papr_QA,Qatar,Gulf producers,million barrels per day,1.5474,Forecast,October 2026
+2027-11-30,2027,11,papr_QA,Qatar,Gulf producers,million barrels per day,1.5674,Forecast,October 2026
+2027-12-31,2027,12,papr_QA,Qatar,Gulf producers,million barrels per day,1.5875,Forecast,October 2026
+2026-10-31,2026,10,papr_ba,Bahrain,Gulf producers,million barrels per day,0.1141,Forecast,October 2026
+2026-11-30,2026,11,papr_ba,Bahrain,Gulf producers,million barrels per day,0.1341,Forecast,October 2026
+2026-12-31,2026,12,papr_ba,Bahrain,Gulf producers,million barrels per day,0.1541,Forecast,October 2026
+2027-01-31,2027,1,papr_ba,Bahrain,Gulf producers,million barrels per day,0.174,Forecast,October 2026
+2027-02-28,2027,2,papr_ba,Bahrain,Gulf producers,million barrels per day,0.194,Forecast,October 2026
+2027-03-31,2027,3,papr_ba,Bahrain,Gulf producers,million barrels per day,0.194,Forecast,October 2026
+2027-04-30,2027,4,papr_ba,Bahrain,Gulf producers,million barrels per day,0.1941,Forecast,October 2026
+2027-05-31,2027,5,papr_ba,Bahrain,Gulf producers,million barrels per day,0.1941,Forecast,October 2026
+2027-06-30,2027,6,papr_ba,Bahrain,Gulf producers,million barrels per day,0.1941,Forecast,October 2026
+2027-07-31,2027,7,papr_ba,Bahrain,Gulf producers,million barrels per day,0.1941,Forecast,October 2026
+2027-08-31,2027,8,papr_ba,Bahrain,Gulf producers,million barrels per day,0.1941,Forecast,October 2026
+2027-09-30,2027,9,papr_ba,Bahrain,Gulf producers,million barrels per day,0.1942,Forecast,October 2026
+2027-10-31,2027,10,papr_ba,Bahrain,Gulf producers,million barrels per day,0.1941,Forecast,October 2026
+2027-11-30,2027,11,papr_ba,Bahrain,Gulf producers,million barrels per day,0.1942,Forecast,October 2026
+2027-12-31,2027,12,papr_ba,Bahrain,Gulf producers,million barrels per day,0.1942,Forecast,October 2026

@@ -58,6 +58,9 @@ header[data-testid="stHeader"] a[data-testid="stTopNavLink"][aria-current="page"
   background: linear-gradient(135deg, #ffffff 0%, #f5f8ff 55%, #e9efff 100%); }}
 .om-hero h1 {{ color: {BRIGHT}; font-size: 2.05rem; line-height: 1.2; margin: 0.15rem 0 0.6rem; padding: 0; }}
 .om-hero p {{ color: {TEXT}; font-size: 1.02rem; line-height: 1.55; margin: 0 0 0.5rem; max-width: 980px; }}
+.om-hero p.om-audience {{ display: inline-block; background: #e9efff; color: {TEXT}; border-radius: 8px;
+  padding: 0.5rem 0.85rem; margin: 0.2rem 0 0.6rem; font-size: 0.98rem; }}
+.om-hero p.om-audience b {{ color: #1e53e5; }}
 .om-hero p.om-for {{ color: {MUTED}; font-size: 0.92rem; }}
 .om-kicker {{ color: {ACCENT}; text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.76rem;
   font-weight: 700; }}
@@ -114,7 +117,9 @@ def apply_style() -> None:
 def hero(title: str, question: str, audience: str, note: str) -> None:
     st.markdown(
         f'<div class="om-hero"><div class="om-kicker">Oil market monitor</div><h1>{html.escape(title)}</h1>'
-        f'<p>{html.escape(question)}</p><p class="om-for">For: {html.escape(audience)}. {html.escape(note)}</p></div>',
+        f'<p>{html.escape(question)}</p>'
+        f'<p class="om-audience"><b>Audience:</b> {html.escape(audience)}.</p>'
+        f'<p class="om-for">{html.escape(note)}</p></div>',
         unsafe_allow_html=True)
 
 

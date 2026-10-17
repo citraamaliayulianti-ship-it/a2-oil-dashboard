@@ -1,48 +1,12 @@
-"""Shared page pieces: the ticker tape, the three question cards, and the data documentation."""
+"""Shared page pieces: the three question cards and the data documentation."""
 
 from __future__ import annotations
 
 import pandas as pd
 import streamlit as st
 
-from src import analysis as an
-from src.theme import cards, ticker
+from src.theme import cards
 from src.views import SOURCES
-
-TAPE = [  # (indicator id, ticker symbol)
-    ("brent", "BRENT"), ("wti", "WTI"), ("brent_wti", "BRENT–WTI"), ("crack_321", "3-2-1 CRACK"),
-    ("diesel_usgc", "ULSD USGC"), ("us_crude", "US CRUDE STOCKS"), ("us_spr", "US SPR"),
-    ("hormuz", "HORMUZ TANKERS"), ("bab_el_mandeb", "BAB EL-MANDEB"), ("suez", "SUEZ"), ("cape", "CAPE"),
-    ("malacca", "MALACCA"),
-]
-UNIT_TAG = {"US dollars per barrel": "", "US dollars per gallon": "", "million barrels": " m bbl",
-            "tanker transit calls per day": "/day"}
-
-
-@st.cache_data
-def tape_items(market: pd.DataFrame) -> list[tuple[str, str, float, str]]:
-    items = []
-    present = set(market["indicator_id"])
-    for indicator, symbol in TAPE:
-        if indicator not in present:
-            continue
-        series = an.monitor_series(market, indicator)
-        row = an.monitor_row(series, None, an.WINDOWS["1 week"])
-        unit = an.MARKET[indicator][2]
-        digits = 3 if unit == "US dollars per gallon" else 1 if unit != "US dollars per barrel" else 2
-        value = f"{row['last']:,.{digits}f}{UNIT_TAG[unit]}"
-        if an.MARKET[indicator][1] == "Spreads" or pd.isna(row["change_pct"]):
-            change_text = f"{row['change']:+,.2f} 1W"
-        else:
-            change_text = f"{row['change_pct']:+.1f}% 1W"
-        items.append((symbol, value, row["change"], change_text))
-    return items
-
-
-def tape(market: pd.DataFrame) -> None:
-    """Latest value and one-week change of the main indicators (7-day means for tanker transits)."""
-    ticker(tape_items(market))
-
 
 def questions() -> None:
     st.markdown("#### Three questions behind the monitor")

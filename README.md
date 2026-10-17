@@ -11,7 +11,7 @@ energy companies who monitor oil supply risk**. It asks:
 
 | Page | File | What it shows |
 |---|---|---|
-| Monitor | `home.py` | Ticker of the latest values; view `market_monitor`: a market-monitor table of 17 indicators (crude and product prices, two spreads, U.S. stocks, tanker transits at five chokepoints) with change over a chosen window, three-year z-score, 52-week range and one-year trend, replayable at the day before each event; a chart of any indicator; a cheat sheet; the three questions |
+| Monitor | `home.py` | The question and links to the three questions; view `market_monitor`: a market-monitor table of 17 indicators (crude and product prices, two spreads, U.S. stocks, tanker transits at five chokepoints) with change over a chosen window, three-year z-score, 52-week range and one-year trend, replayable at the day before each event; a chart of any indicator; a cheat sheet; the three questions |
 | 1. Exposure | `sections/1_exposure.py` | View `chokepoint_exposure`: map and ranking of the 28 PortWatch chokepoints by tanker trade volume or tanker transits in a chosen year, compared with January 2019–October 2023 |
 | 2. Disruptions | `sections/2_disruptions.py` | View `chokepoint_disruption`: daily tanker transits (7-day mean) through selected chokepoints as a percentage of a pre-event baseline, with EIA event dates; monthly table |
 | 3. Balance and prices | `sections/3_balance.py` | View `balance_prices`: EIA estimates of world production, consumption and inventory draws, Brent and WTI, and the output of the seven Gulf producers, with the EIA forecast shown separately |
@@ -92,9 +92,9 @@ and `src/loading.py` (cached loading).
 
 ## Design
 
-The layout borrows the conventions of trading-platform market monitors and commodity dashboards: a dark page, a
-scrolling ticker of the latest values (it stops for readers who prefer reduced motion), a dense monitor table with
-green ▲ and red ▼ changes, a chart panel and a cheat sheet explaining each row. No platform graphics are copied;
-every value comes from this dashboard's data. Up and down colours were checked for colour-vision separation on
-the panel colour, and direction is always also shown by ▲ / ▼. The style lives in `src/theme.py` (CSS injected
+The layout borrows the conventions of trading-platform market monitors and commodity dashboards: a dense monitor
+table with green ▲ and red ▼ changes, headline tiles, a chart panel and a cheat sheet explaining each row, on a light
+page with white panels and a blue accent. No platform graphics are copied; every value comes from this dashboard's
+data. Up and down colours were checked for colour-vision separation, small text uses darker steps for 4.5:1
+contrast, and direction is always also shown by ▲ / ▼. The style lives in `src/theme.py` (CSS injected
 once from `app.py`) and the page colours in `.streamlit/config.toml`.

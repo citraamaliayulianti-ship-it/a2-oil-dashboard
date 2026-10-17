@@ -3,12 +3,11 @@
 import streamlit as st
 
 from src.loading import get
-from src.overview import about_the_data, access_data, tape
+from src.overview import about_the_data, access_data
 from src.stories import HOME, PAGE_CONCLUSION, methods_and_limitations, page_nav
 from src.theme import footer, section_heading
 
 
-tape(get("market_day"))
 section_heading("Data and methods", kicker="Documentation", lead=(
     "Where every number comes from, how the five datasets are built from the published files, and how to rebuild "
     "them."))

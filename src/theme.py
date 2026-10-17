@@ -1,13 +1,13 @@
-"""The dashboard's look: a dark market-terminal style.
+"""The dashboard's look: a light market-monitor style.
 
-The layout borrows the conventions of trading-platform market monitors (a dark
-background, a scrolling ticker of the latest values, a dense monitor table with
-green and red changes, and a "cheat sheet" explaining each row) without copying
-any platform's graphics. Every value shown in the ticker comes from this
-dashboard's own data. Colours: page #131722, panels #1e222d, text #d1d4dc,
-accent blue #2962ff; up #089981 and down #f23645 (checked for colour-vision
-separation on the panel colour) are always paired with ▲ / ▼ so direction is never
-shown by colour alone.
+The layout borrows the conventions of trading-platform market monitors (a dense
+monitor table with green and red changes, a chart panel and a "cheat sheet"
+explaining each row) without copying any platform's graphics. Light page
+(#f4f5f7) with white panels, dark text (#2a2e39) and a blue accent (#2962ff).
+Up and down use green #089981 and red #f23645 for marks and darker steps
+(#067d69, #d1263a) for small text, so the text reaches 4.5:1 contrast; both were
+checked for colour-vision separation and are always paired with ▲ / ▼, so
+direction is never shown by colour alone.
 """
 
 from __future__ import annotations
@@ -15,23 +15,23 @@ from __future__ import annotations
 import html
 
 import altair as alt
-import pandas as pd
 import streamlit as st
 
-PAGE_BG = "#131722"
-PANEL = "#1e222d"
-BORDER = "#2a2e39"
-TEXT = "#d1d4dc"
-MUTED = "#8f929b"           # 5.3:1 on the page, 4.6:1 on panels
-BRIGHT = "#f0f3fa"
+PAGE_BG = "#f4f5f7"
+PANEL = "#ffffff"
+BORDER = "#e0e3eb"
+TEXT = "#2a2e39"
+MUTED = "#5d606b"           # 6.3:1 on panels, 5.7:1 on the page
+BRIGHT = "#131722"          # strongest ink: headings, emphasised values
 ACCENT = "#2962ff"
-UP = "#089981"
-DOWN = "#f23645"
-GRID = "#2a2e39"
+UP, DOWN = "#089981", "#f23645"                 # marks
+UP_TEXT, DOWN_TEXT = "#067d69", "#d1263a"       # small text
+GRID = "#e9ebf0"
+RULE = "#9598a1"            # event lines, baselines
 
-# Dark categorical slots (validated on the panel colour, adjacent pairs) and the diverging pair.
-SERIES = ["#3987e5", "#d95926", "#199e70", "#c98500", "#d55181", "#008300", "#9085e9"]
-COOL, WARM, NEUTRAL = "#3987e5", "#e66767", "#4a4e59"
+# Light categorical slots (validated on white, adjacent pairs) and the diverging pair.
+SERIES = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#6250d6"]
+COOL, WARM, NEUTRAL = "#2a78d6", "#e34948", "#b8bbc4"
 
 PAGES = [  # (url path, label) for the footer
     ("exposure", "1. Exposure"),
@@ -45,34 +45,21 @@ _CSS = f"""
 <style>
 html, body, [class*="st-"] {{ font-family: -apple-system, BlinkMacSystemFont, "Trebuchet MS", "Segoe UI", Roboto,
   Ubuntu, sans-serif; }}
-header[data-testid="stHeader"] {{ background: {PAGE_BG}; border-bottom: 1px solid {BORDER}; height: 3.4rem; }}
+header[data-testid="stHeader"] {{ background: {PANEL}; border-bottom: 1px solid {BORDER}; height: 3.4rem; }}
 header[data-testid="stHeader"] a[data-testid="stTopNavLink"] {{ border-radius: 4px; }}
 header[data-testid="stHeader"] a[data-testid="stTopNavLink"] * {{ color: {TEXT} !important; font-size: 0.86rem;
   font-weight: 600; }}
 header[data-testid="stHeader"] a[data-testid="stTopNavLink"][aria-current="page"] {{
-  background: rgba(41,98,255,0.18) !important; box-shadow: inset 0 -2px 0 {ACCENT}; }}
-header[data-testid="stHeader"] a[data-testid="stTopNavLink"][aria-current="page"] * {{ color: {BRIGHT} !important; }}
-.stMainBlockContainer {{ padding-top: 4.3rem; padding-bottom: 0; max-width: 1380px; }}
-/* ticker tape */
-.om-tape {{ overflow: hidden; white-space: nowrap; background: {PANEL}; border: 1px solid {BORDER};
-  border-radius: 6px; margin: 0 0 1.1rem; font-variant-numeric: tabular-nums; }}
-.om-tape-track {{ display: inline-block; padding: 0.55rem 0; animation: om-scroll 70s linear infinite; }}
-.om-tape:hover .om-tape-track {{ animation-play-state: paused; }}
-.om-tick {{ display: inline-block; margin: 0 1.6rem; font-size: 0.88rem; color: {TEXT}; }}
-.om-tick b {{ color: {BRIGHT}; font-weight: 700; margin-right: 0.45rem; letter-spacing: 0.02em; }}
-.om-up {{ color: {UP}; }} .om-down {{ color: {DOWN}; }} .om-flat {{ color: {MUTED}; }}
-@keyframes om-scroll {{ from {{ transform: translateX(0); }} to {{ transform: translateX(-50%); }} }}
-@media (prefers-reduced-motion: reduce) {{
-  .om-tape {{ white-space: normal; }} .om-tape-track {{ animation: none; }}
-  .om-tape-track span.om-copy {{ display: none; }}
-}}
+  background: rgba(41,98,255,0.10) !important; box-shadow: inset 0 -2px 0 {ACCENT}; }}
+header[data-testid="stHeader"] a[data-testid="stTopNavLink"][aria-current="page"] * {{ color: {ACCENT} !important; }}
+.stMainBlockContainer {{ padding-top: 4.6rem; padding-bottom: 0; max-width: 1380px; }}
 /* page header */
 .om-hero {{ border: 1px solid {BORDER}; border-radius: 8px; padding: 1.4rem 1.6rem 1.2rem; margin-bottom: 1.2rem;
-  background: linear-gradient(135deg, #1e222d 0%, #171b26 60%, #131722 100%); }}
+  background: linear-gradient(135deg, #ffffff 0%, #f5f8ff 55%, #e9efff 100%); }}
 .om-hero h1 {{ color: {BRIGHT}; font-size: 2.05rem; line-height: 1.2; margin: 0.15rem 0 0.6rem; padding: 0; }}
 .om-hero p {{ color: {TEXT}; font-size: 1.02rem; line-height: 1.55; margin: 0 0 0.5rem; max-width: 980px; }}
 .om-hero p.om-for {{ color: {MUTED}; font-size: 0.92rem; }}
-.om-kicker {{ color: #5b8cff; text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.76rem;
+.om-kicker {{ color: {ACCENT}; text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.76rem;
   font-weight: 700; }}
 h2.om-title {{ color: {BRIGHT}; font-size: 1.55rem; line-height: 1.3; margin: 0.2rem 0 0.4rem; padding: 0; }}
 p.om-lead {{ color: {TEXT}; max-width: 1000px; line-height: 1.6; margin: 0 0 0.5rem; }}
@@ -100,21 +87,20 @@ table.om-cheat td {{ border-bottom: 1px solid {BORDER}; padding: 0.5rem 0.6rem; 
 table.om-cheat td:first-child {{ color: {BRIGHT}; font-weight: 600; white-space: nowrap; }}
 .om-cards {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0.9rem; margin: 0.4rem 0 1rem; }}
 .om-card {{ background: {PANEL}; border: 1px solid {BORDER}; border-radius: 8px; padding: 1rem 1.1rem; }}
-.om-card a {{ color: {BRIGHT}; font-weight: 700; text-decoration: none; font-size: 1.02rem; }}
-.om-card a:hover {{ color: #5b8cff; }}
+.om-card a {{ color: #1e53e5; font-weight: 700; text-decoration: none; font-size: 1.02rem; }}
+.om-card a:hover {{ color: {ACCENT}; }}
 .om-card p {{ color: {TEXT}; font-size: 0.9rem; line-height: 1.5; margin: 0.45rem 0 0; }}
 .om-card .om-kicker {{ font-size: 0.7rem; }}
 .om-footer {{ border-top: 1px solid {BORDER}; color: {MUTED}; text-align: center; padding: 1.2rem 1rem 1.6rem;
   margin-top: 2rem; font-size: 0.88rem; line-height: 2; }}
 .om-footer a {{ color: {TEXT}; text-decoration: none; margin: 0 0.9rem; white-space: nowrap; }}
 .om-footer a:hover {{ color: {BRIGHT}; }}
-.stMainBlockContainer a {{ color: #5b8cff; }}
+.stMainBlockContainer a {{ color: #1e53e5; }}
 @media (max-width: 760px) {{
   .om-hero {{ padding: 1.1rem 1rem 0.9rem; }}
   .om-hero h1 {{ font-size: 1.55rem; }}
   h2.om-title {{ font-size: 1.3rem; }}
   div[class*="st-key-panel_"] {{ padding: 0.8rem 0.6rem 0.3rem; }}
-  .om-tick {{ margin: 0 1rem; }}
 }}
 </style>
 """
@@ -123,26 +109,6 @@ table.om-cheat td:first-child {{ color: {BRIGHT}; font-weight: 600; white-space:
 def apply_style() -> None:
     """Page-wide style; called once from app.py so it applies to every page."""
     st.markdown(_CSS, unsafe_allow_html=True)
-
-
-def _arrow(change: float) -> tuple[str, str]:
-    if pd.isna(change) or abs(change) < 1e-9:
-        return "■", "om-flat"
-    return ("▲", "om-up") if change > 0 else ("▼", "om-down")
-
-
-def ticker(items: list[tuple[str, str, float, str]]) -> None:
-    """Scrolling tape: (symbol, value text, change, change text). The content is repeated once so
-    the loop is seamless; screen readers get the first copy only."""
-    cells = []
-    for symbol, value, change, change_text in items:
-        arrow, cls = _arrow(change)
-        cells.append(f'<span class="om-tick"><b>{html.escape(symbol)}</b>{html.escape(value)} '
-                     f'<span class="{cls}">{arrow} {html.escape(change_text)}</span></span>')
-    body = "".join(cells)
-    st.markdown(f'<div class="om-tape" role="marquee" aria-label="Latest values and one-week changes">'
-                f'<div class="om-tape-track">{body}<span class="om-copy" aria-hidden="true">{body}</span></div></div>',
-                unsafe_allow_html=True)
 
 
 def hero(title: str, question: str, audience: str, note: str) -> None:
@@ -187,9 +153,9 @@ def footer() -> None:
 
 
 def style_chart(chart: alt.Chart) -> alt.Chart:
-    """Dark chart chrome: hairline grid, muted axes, transparent background on the panel."""
+    """Chart chrome: hairline grid, muted axes, transparent background on the white panel."""
     return (
-        chart.configure_axis(gridColor=GRID, domainColor="#434651", tickColor="#434651", labelColor=MUTED,
+        chart.configure_axis(gridColor=GRID, domainColor="#c9ccd4", tickColor="#c9ccd4", labelColor=MUTED,
                              titleColor=MUTED, titleFontWeight="normal", labelFontSize=11.5, titleFontSize=11.5)
         .configure_view(strokeWidth=0)
         .configure_legend(labelColor=TEXT, titleColor=MUTED, orient="top", labelFontSize=12, titleFontSize=11.5)

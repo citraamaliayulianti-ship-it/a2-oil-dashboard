@@ -16,7 +16,7 @@ import streamlit as st
 
 from src import analysis as an
 from src.data import DATA, GROUPS, MARKET, STEO, STEO_GROUPS
-from src.theme import (ACCENT, BORDER, BRIGHT, COOL, DOWN, MUTED, PAGE_BG, PANEL, SERIES, TEXT, UP, WARM,
+from src.theme import (ACCENT, BORDER, BRIGHT, COOL, DOWN_TEXT, MUTED, NEUTRAL, PANEL, RULE, SERIES, TEXT, UP_TEXT, WARM,
                        section_heading, source_line, style_chart)
 
 
@@ -129,7 +129,7 @@ def _event_layers(first: pd.Timestamp, last: pd.Timestamp, y_top: float | None =
     events["row"] = [2 + 13 * (i % 2) for i in range(len(events))]   # alternate rows so close labels do not overlap
     if events.empty:
         return []
-    rule = alt.Chart(events).mark_rule(color="#787b86", strokeWidth=1).encode(
+    rule = alt.Chart(events).mark_rule(color=RULE, strokeWidth=1).encode(
         x="date:T", tooltip=[alt.Tooltip("text:N", title="Event"), alt.Tooltip("source:N", title="Source")])
     label = alt.Chart(events).mark_text(align="left", baseline="top", dx=4, fontSize=10.5, color=MUTED).encode(
         x="date:T", y=alt.Y("row:Q", scale=None), text="label:N")
@@ -180,7 +180,7 @@ def _signed(value: float, digits: int = 2, suffix: str = "") -> str:
 def _colour_sign(value: float) -> str:
     if pd.isna(value) or value == 0:
         return f"color: {MUTED}"
-    return f"color: {UP}" if value > 0 else f"color: {DOWN}"
+    return f"color: {UP_TEXT}" if value > 0 else f"color: {DOWN_TEXT}"
 
 
 def _colour_z(value: float) -> str:
@@ -236,7 +236,7 @@ def _monitor_chart(market: pd.DataFrame, indicator_id: str, as_of: pd.Timestamp 
     axis_title = f"{label} ({UNIT_SHORT[unit]})"
     band = alt.Chart(pd.DataFrame({"low": [mean - spread], "high": [mean + spread]})).mark_rect(
         color=ACCENT, opacity=0.12).encode(y="low:Q", y2="high:Q")
-    centre = alt.Chart(pd.DataFrame({"mean": [mean]})).mark_rule(color="#5b8cff", strokeWidth=1, opacity=0.8).encode(
+    centre = alt.Chart(pd.DataFrame({"mean": [mean]})).mark_rule(color=ACCENT, strokeWidth=1, opacity=0.7).encode(
         y="mean:Q")
     hover = alt.selection_point(on="pointerover", nearest=True, fields=["date"], empty=False)
     line = alt.Chart(frame).mark_line(color=SERIES[0], strokeWidth=2).encode(
@@ -348,8 +348,8 @@ def _exposure_map(table: pd.DataFrame, column: str, scale: float, unit: str, cha
     outlines = _outlines(str(MAP_FILE))
     geo = alt.InlineData(values=outlines, format=alt.DataFormat(type="topojson", feature="countries"),
                          name="country_outlines")
-    land = alt.Chart(geo).mark_geoshape(fill="#2a2e39", stroke=PAGE_BG, strokeWidth=0.5)
-    globe = alt.Chart(alt.sphere()).mark_geoshape(fill="#161a25", stroke=BORDER, strokeWidth=0.8)
+    land = alt.Chart(geo).mark_geoshape(fill="#dfe3ea", stroke="#ffffff", strokeWidth=0.5)
+    globe = alt.Chart(alt.sphere()).mark_geoshape(fill="#f3f6fb", stroke=BORDER, strokeWidth=0.8)
     points = table.assign(value=table[column] * scale, change_capped=table[change].clip(-100, 100))
     points["label"] = np.where(points.index < 6, points["chokepoint"], "")
     encode = dict(
@@ -357,14 +357,14 @@ def _exposure_map(table: pd.DataFrame, column: str, scale: float, unit: str, cha
         size=alt.Size("value:Q", scale=alt.Scale(range=[15, 1500], zero=True), legend=None),
         color=alt.Color("change_capped:Q", title="Change from Jan 2019–Oct 2023 (%)",
                         scale=alt.Scale(domain=[-100, -50, 0, 50, 100],
-                                        range=[WARM, "#f2a5a5", "#9598a1", "#9cc3f2", COOL], interpolate="lab"),
+                                        range=[WARM, "#f2a5a5", NEUTRAL, "#9cc3f2", COOL], interpolate="lab"),
                         legend=alt.Legend(orient="bottom", direction="horizontal", gradientLength=260,
                                           titleOrient="left")),
         tooltip=[alt.Tooltip("chokepoint:N", title="Chokepoint"),
                  alt.Tooltip("value:Q", title=unit, format=",.2f"),
                  alt.Tooltip(f"{change}:Q", title="Change from Jan 2019–Oct 2023 (%)", format="+.0f")],
     )
-    circles = alt.Chart(points).mark_circle(opacity=0.92, stroke=PAGE_BG, strokeWidth=1).encode(**encode)
+    circles = alt.Chart(points).mark_circle(opacity=0.92, stroke="#ffffff", strokeWidth=1).encode(**encode)
     labels = alt.Chart(points).mark_text(align="left", dx=9, dy=-6, fontSize=11, color=TEXT).encode(
         longitude="lon:Q", latitude="lat:Q", text="label:N")
     chart = alt.layer(globe, land, circles, labels).project("equalEarth").properties(
@@ -385,7 +385,7 @@ def _exposure_bars(table: pd.DataFrame, column: str, scale: float, unit: str, ba
     ticks = alt.Chart(top).mark_tick(color=BRIGHT, thickness=2, size=16).encode(y=y, x="base:Q")
     chart = alt.layer(bars, ticks).properties(height=470, title=alt.TitleParams(
         f"Top 15 chokepoints by tanker trade, {year}", subtitle=["Bars: selected year.",
-                                                                 "White ticks: Jan 2019–Oct 2023 mean (before the Red Sea attacks)."]))
+                                                                 "Dark ticks: Jan 2019–Oct 2023 mean (before the Red Sea attacks)."]))
     st.altair_chart(style_chart(chart), width="stretch")
 
 
@@ -606,7 +606,7 @@ def _draw_bars(history: pd.DataFrame, forecast: pd.DataFrame, domain: list) -> N
         tooltip=[alt.Tooltip("date:T", title="Month", format="%b %Y"),
                  alt.Tooltip("value:Q", title="Net withdrawal (million b/d)", format="+.2f"),
                  alt.Tooltip("status:N", title="Status")])
-    zero = alt.Chart(pd.DataFrame({"y": [0]})).mark_rule(color="#434651").encode(y="y:Q")
+    zero = alt.Chart(pd.DataFrame({"y": [0]})).mark_rule(color="#b2b5be").encode(y="y:Q")
     first, last = pd.Timestamp(domain[0]), pd.Timestamp(domain[1])
     chart = alt.layer(zero, bars, *_event_layers(first, last)).properties(height=260, title=alt.TitleParams(
         "World inventory net withdrawals", subtitle=["Consumption minus production.",

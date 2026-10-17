@@ -3,14 +3,12 @@
 import streamlit as st
 
 from src.loading import get
-from src.overview import tape
 from src.stories import PAGE_BALANCE, PAGE_EXPOSURE, disruption_summary, page_nav
 from src.theme import footer
 from src.views import render_disruption
 
 
 day = get("chokepoint_day")
-tape(get("market_day"))
 
 with st.container(key="chokepoint_disruption"):
     render_disruption(day, after=lambda: disruption_summary(day))
